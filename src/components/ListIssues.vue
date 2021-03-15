@@ -1,7 +1,12 @@
 <template>
-    <div>
+    <div class="head">
         <b-list-group v-for="issue in issues" :key="issue.id">
-            <b-list-group-item>{{ issue.title }}</b-list-group-item>
+            <b-list-group-item>
+                {{ issue.title }}
+                <br/>
+                <br/>
+
+            </b-list-group-item>
         </b-list-group>
         
     </div>
@@ -48,5 +53,7 @@ export default {
 </script>
 
 <style scoped>
-
+.head{
+    padding-top: 40px;
+}
 </style>
