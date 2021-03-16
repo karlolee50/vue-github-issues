@@ -4,7 +4,7 @@
   </div>
 </template>
 <script>
-import ListIssues from './components/ListIssues';
+import ListIssues from './components/ListIssues.vue'
 
 export default {
   name: 'App',
