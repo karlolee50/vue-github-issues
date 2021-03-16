@@ -3,7 +3,6 @@
     <ListIssues></ListIssues>
   </div>
 </template>
-
 <script>
 import ListIssues from './components/ListIssues';
 
@@ -15,6 +14,3 @@ export default {
 }
 </script>
 
-<style>
-
-</style>
