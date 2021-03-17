@@ -15,7 +15,7 @@
             </b-badge>
           </div>
           <p class="text-small" v-if="issue.state==='open'" >#{{ issue.number }} opened {{ formatDate(issue.created_at) }} by {{ issue.user.login }}</p>
-          <p class="text-small" v-if="issue.state==='closed'" >#{{ issue.number }} by {{ issue.user.login }} was closed {{ formatDate(issue.created_at) }} </p>
+          <p class="text-small" v-else >#{{ issue.number }} by {{ issue.user.login }} was closed {{ formatDate(issue.created_at) }} </p>
       </b-list-group-item>
       </div>
     </b-list-group>
