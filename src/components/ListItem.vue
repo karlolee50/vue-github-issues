@@ -14,8 +14,8 @@
               {{ label.name }}
             </b-badge>
           </div>
-          <p class="text-small" v-if="issue.state==='open'" >#{{ issue.number }} opened {{ moment(issue.created_at) }} by {{ issue.user.login }}</p>
-          <p class="text-small" v-if="issue.state==='closed'" >#{{ issue.number }} by {{ issue.user.login }} was closed {{ moment(issue.created_at) }} </p>
+          <p class="text-small" v-if="issue.state==='open'" >#{{ issue.number }} opened {{ formatDate(issue.created_at) }} by {{ issue.user.login }}</p>
+          <p class="text-small" v-if="issue.state==='closed'" >#{{ issue.number }} by {{ issue.user.login }} was closed {{ formatDate(issue.created_at) }} </p>
       </b-list-group-item>
       </div>
     </b-list-group>
@@ -32,15 +32,20 @@ export default {
   props: ['issues'],
 
   methods: {
-    moment(date) {
-      if ((moment().month() === moment(date).month()) && (moment().year() === moment(date).year()) ) {
+    formatDate(date) {
+      let currentMonth = moment().month();
+      let issueMonth = moment(date).month();
+      let currentYear = moment().year();
+      let issueYear = moment(date).year();
+
+      if (currentMonth === issueMonth && currentYear === issueYear) {
         return moment(date).fromNow();
-      }else if ( (moment().month() !== moment(date).month()) && (moment().year() === moment(date).year()) ) {
+      } else if (currentMonth !== issueMonth && currentYear === issueYear) {
         return ` on ${moment(date).format("MMM D")}`;
-      }else {
+      } else {
         return ` on ${moment(date).format("MMM D, YYYY")}`;
       }
-    },
+    }
   }
 }
 </script>
