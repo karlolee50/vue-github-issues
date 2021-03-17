@@ -1,6 +1,15 @@
 <template>
   <div class="head">
     <ListItem :issues="issues"></ListItem>
+    <b-pagination
+      v-model="currentPage"
+      :total-rows="rows"
+      :per-page="perPage"
+      @change="goToPage"
+      align="center"
+      style="padding-top: 10px"
+      aria-controls="my-table"
+    />
   </div>
 </template>
 
@@ -21,17 +30,20 @@ export default {
   data() {
     return {
       issues: [],
+      perPage: 5,
+      currentPage: 1
     }
   },
   
   methods: {
-    async fetch() {
+    async fetch(pageNumber) {
       await axios.get(ROOT_URL, {
         headers: {
           accept: 'application/vnd.github.v3+json'
         },
         params: {
           per_page: 40,
+          page: pageNumber,
           state: 'all'
         }
       })
@@ -41,10 +53,24 @@ export default {
         console.log(err);
       });
     },
+    goToPage(value) {
+      this.currentPage = value;
+      this.fetch(this.currentPage);
+      setTimeout(() => {
+        window.scrollTo(0,0);
+      }, 300);
+    }
     
   },
+
+  computed: {
+      rows() {
+        return this.issues.length;
+      }
+  },
+
   created() {
-    this.fetch();
+    this.fetch(this.currentPage);
   }
 }
 </script>
