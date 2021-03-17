@@ -31,7 +31,8 @@ export default {
           accept: 'application/vnd.github.v3+json'
         },
         params: {
-          per_page: 20,
+          per_page: 40,
+          state: 'all'
         }
       })
       .then(response => {
