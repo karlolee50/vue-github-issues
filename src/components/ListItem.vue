@@ -38,7 +38,7 @@ export default {
       }else if ( (moment().month() !== moment(date).month()) && (moment().year() === moment(date).year()) ) {
         return ` on ${moment(date).format("MMM D")}`;
       }else {
-        return ` on ${moment(date).format("MMM D YYYY")}`;
+        return ` on ${moment(date).format("MMM D, YYYY")}`;
       }
     },
   }
