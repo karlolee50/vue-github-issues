@@ -17,12 +17,11 @@
 import axios from 'axios';
 import ListItem from './ListItem';
 
-const OWNER = 'vuejs';
-const REPO = 'vue';
-const ROOT_URL = `https://api.github.com/repos/${OWNER}/${REPO}/issues`;
-
 export default {
   name: 'ListIssues',
+
+  props: ['ROOT_URL'],
+
   components: {
     ListItem
   },
@@ -37,7 +36,7 @@ export default {
   
   methods: {
     async fetch(pageNumber) {
-      await axios.get(ROOT_URL, {
+      await axios.get(this.ROOT_URL, {
         headers: {
           accept: 'application/vnd.github.v3+json'
         },
