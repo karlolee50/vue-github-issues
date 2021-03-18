@@ -9,7 +9,7 @@ export function formatDateHelper(date) {
     if (currentMonth === issueMonth && currentYear === issueYear) {
       return moment(date).fromNow();
     } else if (currentMonth !== issueMonth && currentYear === issueYear) {
-      return ` on ${moment(date).format("MMM D")}`;
+      return ` on ${moment(date).format("D MMM")}`;
     } else {
       return ` on ${moment(date).format("MMM D, YYYY")}`;
     }
