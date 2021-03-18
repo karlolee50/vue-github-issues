@@ -17,7 +17,7 @@
               </b-iconstack> 
               Closed
             </b-badge>
-          {{ issue.user.login }} opened this issue {{ issue.created_at }}</b-col>
+          {{ issue.user.login }} opened this issue {{ formatDate(issue.created_at) }}</b-col>
       </b-row>
     </b-container>
     <br />
@@ -31,7 +31,7 @@
           <b-card-group deck>
             <b-card header-tag="header">
               <template #header>
-                <h6 class="mb-0">{{ issue.user.login }} commented {{ issue.created_at }}</h6>
+                <h6 class="mb-0">{{ issue.user.login }} commented {{ formatDate(issue.created_at) }}</h6>
               </template>
               <b-card-text v-html="body"></b-card-text>
             </b-card>
@@ -44,6 +44,7 @@
 
 <script>
 import axios from 'axios';
+import {formatDateHelper} from '../helpers/formatdate';
 
 export default {
   name: 'IssueDetail',
@@ -82,7 +83,12 @@ export default {
       }).catch(err => {
         console.log(err);
       });
+    },
+
+    formatDate(date) {
+      return formatDateHelper(date);
     }
+
   },
 
   created() {
