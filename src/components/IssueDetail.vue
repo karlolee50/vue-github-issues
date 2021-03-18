@@ -3,7 +3,14 @@
     <b-container class="bv-example-row">
       <b-row>
         <b-col>
-          <h1>{{ issue.title }} #{{ issue.number }}</h1>
+          <h2>
+            <span>
+              {{ issue.title }}
+            </span>
+             <span class="text-muted">
+               #{{ issue.number }}
+             </span>
+          </h2>
         </b-col>
         <div class="w-100"></div>
         <b-col>
@@ -44,6 +51,7 @@
 
 <script>
 import axios from 'axios';
+import api from '../helpers/github';
 import {formatDateHelper} from '../helpers/formatdate';
 
 export default {
@@ -60,29 +68,15 @@ export default {
   },
 
   methods: {
-    async fetch() {
-      await axios.get(`https://api.github.com/repos/vuejs/vue/issues/${this.issueId}`, {
-        headers: {
-          accept: 'application/vnd.github.v3+json'
-        }
-      })
-      .then(response => {
-        this.issue = response.data;
-      }).catch(err => {
-        console.log(err);
+    fetch() {
+
+      api.fetchIssue(this.issueId).then((response) => {
+        this.issue = response;
+        api.markdownText(this.issue.body).then((response) => {
+          this.body = response;
+        });
       });
 
-      await axios.post(`https://api.github.com/markdown`, {
-        headers: {
-          accept: 'application/vnd.github.v3+json'
-        },
-        text: this.issue.body
-      })
-      .then(response => {
-        this.body = response.data;
-      }).catch(err => {
-        console.log(err);
-      });
     },
 
     formatDate(date) {
