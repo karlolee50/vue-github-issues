@@ -8,7 +8,8 @@
             <b-icon stacked icon="exclamation-circle" variant="danger" ></b-icon>
             <b-icon stacked icon="check" variant="danger" shift-v="2" shift-h="6" scale="0.95"></b-icon>
           </b-iconstack>
-          {{ issue.title }}
+          <router-link :to="{ name: 'issue', params: { issueId: issue.number }}"> {{ issue.title }}</router-link>
+
           <div v-for="label in issue.labels" :key="label.id" style="display: inline-block; padding: 2px;">
             <b-badge :style="{ background: `#${label.color}`, color: 'white' }">
               {{ label.name }}

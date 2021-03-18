@@ -1,7 +1,9 @@
 <template>
   <div>
     <b-navbar toggleable="lg" type="dark" variant="info">
-    <b-navbar-brand href="#">{{ owner }}/{{ repo }}</b-navbar-brand>
+    <b-navbar-brand href="/">
+      {{ owner }}/{{ repo }}
+    </b-navbar-brand>
 <!-- ################## Commenting out as this section might be used in the future ################## --> 
     <!-- <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
     <b-collapse id="nav-collapse" is-nav>
