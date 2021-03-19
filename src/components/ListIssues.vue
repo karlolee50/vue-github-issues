@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import api from '../helpers/github';
 import ListItem from './ListItem';
 
 export default {
@@ -35,23 +35,12 @@ export default {
   },
   
   methods: {
-    async fetch(pageNumber) {
-      await axios.get(this.ROOT_URL, {
-        headers: {
-          accept: 'application/vnd.github.v3+json'
-        },
-        params: {
-          per_page: 40,
-          page: pageNumber,
-          state: 'all'
-        }
-      })
-      .then(response => {
-        this.issues = response.data;
-      }).catch(err => {
-        console.log(err);
+    fetch(pageNumber) {
+      api.fetchAll(pageNumber).then((response) => {
+        this.issues = response;
       });
     },
+
     goToPage(value) {
       this.currentPage = value;
       this.fetch(this.currentPage);

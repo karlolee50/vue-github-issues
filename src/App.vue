@@ -2,7 +2,12 @@
   <div>
     <Navbar :owner="owner" :repo="repo"></Navbar>
     <div id="app" class="container">
+      <div v-if="$route.path === '/'">
       <ListIssues :ROOT_URL="ROOT_URL" ></ListIssues>
+      </div>
+      <div v-else>
+        <router-view></router-view>
+      </div>
     </div>
   </div>
 </template>
