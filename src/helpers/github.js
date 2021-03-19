@@ -24,26 +24,26 @@ export default {
 
   fetchIssue(issueId){
     const promise = axios.get(`https://api.github.com/repos/${OWNER}/${REPO}/issues/${issueId}`, {
-        headers: {
-          accept: 'application/vnd.github.v3+json'
-        }
-      });
+      headers: {
+        accept: 'application/vnd.github.v3+json'
+      }
+    });
 
-      const issueData = promise.then(response => response.data);
+    const issueData = promise.then(response => response.data);
 
-      return issueData;
+    return issueData;
   },
 
   markdownText(text) {
     const promise = axios.post(`https://api.github.com/markdown`, {
-        headers: {
-          accept: 'application/vnd.github.v3+json'
-        },
-        text: text
-      })
+      headers: {
+        accept: 'application/vnd.github.v3+json'
+      },
+      text: text
+    });
 
-      const body = promise.then(response => response.data);
+    const body = promise.then(response => response.data);
 
-      return body;
+    return body;
   }
 }
