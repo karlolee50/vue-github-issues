@@ -26,13 +26,7 @@
         {{ issue.user.login }} opened this issue {{ formatDate(issue.created_at) }}
       </b-col>
       <b-col>
-        <b-badge 
-          v-for="label in issue.labels" 
-          :key="label.id" 
-          :style="{ background: `#${label.color}`, color: 'white', 
-          padding: '2px' }">
-          {{ label.name }}
-        </b-badge>
+        <Labels :labels="issue.labels"/>
       </b-col>
     </b-row>
   </div>
@@ -40,9 +34,14 @@
 
 <script>
 import {formatDateHelper} from '../../helpers/formatdate';
+import Labels from '../Labels';
 
 export default {
   name: 'DetailHeader',
+
+  components: {
+    Labels
+  },
 
   props: ['issue'],
 

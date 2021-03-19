@@ -9,12 +9,7 @@
             <b-icon stacked icon="check" variant="danger" shift-v="2" shift-h="6" scale="0.95"></b-icon>
           </b-iconstack>
           <router-link :to="{ name: 'issue', params: { issueId: issue.number }}"> {{ issue.title }}</router-link>
-
-          <div v-for="label in issue.labels" :key="label.id" style="display: inline-block; padding: 2px;">
-            <b-badge :style="{ background: `#${label.color}`, color: 'white' }">
-              {{ label.name }}
-            </b-badge>
-          </div>
+            <Labels :labels="issue.labels" style="display: inline-block; padding: 2px;" />
           <p class="text-small" v-if="issue.state==='open'" >#{{ issue.number }} opened {{ formatDate(issue.created_at) }} by {{ issue.user.login }}</p>
           <p class="text-small" v-else >#{{ issue.number }} by {{ issue.user.login }} was closed {{ formatDate(issue.created_at) }} </p>
       </b-list-group-item>
@@ -27,8 +22,14 @@
 <script>
 import {formatDateHelper} from '../helpers/formatdate';
 
+import Labels from './Labels';
+
 export default {
   name: 'ListItem',
+
+  components: {
+    Labels
+  },
 
   props: ['issues'],
 
