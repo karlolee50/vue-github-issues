@@ -29,6 +29,7 @@
       style="padding-top: 10px"
       aria-controls="my-table"
     />
+    
   </div>
 </template>
 
@@ -36,7 +37,7 @@
 import api from '../helpers/github';
 import ListItem from './ListItem';
 
-
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'ListIssues',
@@ -51,7 +52,7 @@ export default {
     return {
       issues: [],
       perPage: 5,
-      currentPage: 1,
+      currentPage: window.localStorage.getItem('current_page'),
       status: '',
       isActive: 'success'
     }
@@ -65,6 +66,8 @@ export default {
     },
 
     goToPage(value) {
+      // mapActions(['goToOnePage'])
+      this.$store.dispatch('goToOnePage', value);
       this.currentPage = value;
       this.fetch(this.currentPage, this.status);
       setTimeout(() => {
@@ -74,14 +77,15 @@ export default {
     onChangeStatus(value) {
       this.status = value;
       this.fetch(this.currentPage, this.status);
-    }
-    
+    },
+    // ... mapActions(['goToOnePage'])
   },
 
   computed: {
     rows() {
       return this.issues.length;
-    }
+    },
+    // ... mapGetters(['currentPage'])
   },
 
   created() {
@@ -90,6 +94,7 @@ export default {
       OPEN: "open",
       CLOSED: "closed"
     };
+    
     this.status = this.STATUS.ALL;
     this.fetch(this.currentPage, this.status);
   }
