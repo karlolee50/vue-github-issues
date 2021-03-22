@@ -7,6 +7,8 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import IssueDetail from './components/IssueDetail';
+import ListIssues from './components/ListIssues';
+
 
 Vue.use(BootstrapVue)
 Vue.use(BootstrapVueIcons)
@@ -21,9 +23,14 @@ const routes = [
     component: IssueDetail,
     props: true
   },
+  {
+    path: "/status=:status",
+    name: 'status',
+    component: ListIssues
+  }
 ];
 
-const router = new VueRouter({
+export const router = new VueRouter({
   mode: 'history',
 
   routes
@@ -31,7 +38,6 @@ const router = new VueRouter({
 
 new Vue({
   router,
-
   render: h => h(App),
 }).$mount('#app')
 

@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-navbar toggleable="lg" type="dark" variant="info">
-    <b-navbar-brand to="/">
+    <b-navbar-brand href="/">
       {{ owner }}/{{ repo }}
     </b-navbar-brand>
 <!-- ################## Commenting out as this section might be used in the future ################## --> 
