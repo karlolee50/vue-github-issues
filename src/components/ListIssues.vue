@@ -20,6 +20,7 @@
       </b-button-group>
     </div>
     <ListItem :issues="issues" />
+    <ListItem :issues="issues" :ROOT_URL="ROOT_URL"></ListItem>
     <b-pagination
       v-model="currentPage"
       :total-rows="rows"
@@ -53,20 +54,28 @@ export default {
       perPage: 5,
       currentPage: 1,
       status: '',
-      isActive: 'success'
+      isActive: 'success',
+      owner: '',
+      repo: ''
     }
   },
   
   methods: {
-    fetch(pageNumber, status) {
-      api.fetchAll(pageNumber, status).then((response) => {
+    fetch(pageNumber) {
+      this.currentStatusQuery = this.$route.query.status;
+      this.status = !this.currentStatusQuery ? this.STATUS.ALL : this.currentStatusQuery;
+      this.newOwner = this.$route.query.owner;
+      this.newRepo = this.$route.query.repo;
+      this.owner = !this.newOwner ? 'vuejs' : this.newOwner;
+      this.repo = !this.newRepo ? 'vue' : this.newRepo;
+      api.fetchAll(pageNumber, this.owner, this.repo, this.status).then((response) => {
         this.issues = response;
       });
     },
 
     goToPage(value) {
       this.currentPage = value;
-      this.fetch(this.currentPage, this.status);
+      this.fetch(this.currentPage, this.owner, this.repo, this.status);
       setTimeout(() => {
         window.scrollTo(0,0);
       }, 300);
@@ -74,8 +83,8 @@ export default {
 
     onChangeStatus(value) {
       this.status = value;
-      router.push({ path: '', query: { status: `${this.status}` } })
-      this.fetch(this.currentPage, this.status);
+      router.push({ path: '', query: Object.assign({}, this.$route.query, { status: `${this.status}` }) });
+      this.fetch(this.currentPage, this.owner, this.repo, this.status);
     },
   },
 
@@ -85,16 +94,24 @@ export default {
     },
   },
 
+  watch: {
+    ROOT_URL(newVal) {
+      this.currentPage = 1;
+      this.owner = this.newOwner;
+      this.repo = this.$route.query.repo;
+      this.fetch(this.currentPage, this.$route.query.owner, this.$route.query.repo);
+    }
+  },
+
   created() {
     this.STATUS = {
       ALL: "all",
       OPEN: "open",
       CLOSED: "closed"
     };
-    this. currentStatusQuery = this.$route.query.status;
-    this.status = !this.currentStatusQuery ? this.STATUS.ALL : this.currentStatusQuery;
-    this.fetch(this.currentPage, this.status);
+    this.fetch(this.currentPage, this.owner, this.repo, this.status);
   }
+
 }
 </script>
 <style scoped>

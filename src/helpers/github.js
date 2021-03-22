@@ -2,11 +2,10 @@ import axios from 'axios';
 
 const OWNER = 'vuejs';
 const REPO = 'vue';
-const ROOT_URL = `https://api.github.com/repos/${OWNER}/${REPO}/issues`;
 
 export default {
-  fetchAll(pageNumber, status) {
-    const promise = axios.get(ROOT_URL, {
+  fetchAll(pageNumber, owner, repo, status) {
+    const promise = axios.get(`https://api.github.com/repos/${owner}/${repo}/issues`, {
       headers: {
         accept: 'application/vnd.github.v3+json'
       },
@@ -22,8 +21,8 @@ export default {
     return issuesData;
   },
 
-  fetchIssue(issueId){
-    const promise = axios.get(`https://api.github.com/repos/${OWNER}/${REPO}/issues/${issueId}`, {
+  fetchIssue(issueId, owner, repo){
+    const promise = axios.get(`https://api.github.com/repos/${owner}/${repo}/issues/${issueId}`, {
       headers: {
         accept: 'application/vnd.github.v3+json'
       }

@@ -15,7 +15,7 @@ import DetailContent from './detail/DetailContent';
 export default {
   name: 'IssueDetail',
 
-  props: ['issueId'],
+  props: ['issueId', 'owner', 'repo'],
 
   components: {
     DetailHeader,
@@ -32,7 +32,7 @@ export default {
 
   methods: {
     fetch() {
-      api.fetchIssue(this.issueId).then((response) => {
+      api.fetchIssue(this.issueId, this.owner, this.repo).then((response) => {
         this.issue = response;
         api.markdownText(this.issue.body).then((response) => {
           this.body = response;
