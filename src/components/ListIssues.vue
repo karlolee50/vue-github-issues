@@ -29,7 +29,6 @@
       style="padding-top: 10px"
       aria-controls="my-table"
     />
-    
   </div>
 </template>
 
@@ -37,7 +36,7 @@
 import api from '../helpers/github';
 import ListItem from './ListItem';
 
-import { mapActions, mapGetters } from 'vuex';
+import { router } from '../main';
 
 export default {
   name: 'ListIssues',
@@ -52,7 +51,7 @@ export default {
     return {
       issues: [],
       perPage: 5,
-      currentPage: window.localStorage.getItem('current_page'),
+      currentPage: 1,
       status: '',
       isActive: 'success'
     }
@@ -66,26 +65,24 @@ export default {
     },
 
     goToPage(value) {
-      // mapActions(['goToOnePage'])
-      this.$store.dispatch('goToOnePage', value);
       this.currentPage = value;
       this.fetch(this.currentPage, this.status);
       setTimeout(() => {
         window.scrollTo(0,0);
       }, 300);
     },
+
     onChangeStatus(value) {
       this.status = value;
+      router.push({ path: '', query: { status: `${this.status}` } })
       this.fetch(this.currentPage, this.status);
     },
-    // ... mapActions(['goToOnePage'])
   },
 
   computed: {
     rows() {
       return this.issues.length;
     },
-    // ... mapGetters(['currentPage'])
   },
 
   created() {
@@ -94,8 +91,8 @@ export default {
       OPEN: "open",
       CLOSED: "closed"
     };
-    
-    this.status = this.STATUS.ALL;
+    this. currentStatusQuery = this.$route.query.status;
+    this.status = !this.currentStatusQuery ? this.STATUS.ALL : this.currentStatusQuery;
     this.fetch(this.currentPage, this.status);
   }
 }
