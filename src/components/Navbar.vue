@@ -4,45 +4,53 @@
     <b-navbar-brand href="/">
       {{ owner }}/{{ repo }}
     </b-navbar-brand>
-<!-- ################## Commenting out as this section might be used in the future ################## --> 
-    <!-- <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-    <b-collapse id="nav-collapse" is-nav>
-      <b-navbar-nav>
-        <b-nav-item href="#">Link</b-nav-item>
-        <b-nav-item href="#" disabled>Disabled</b-nav-item>
-      </b-navbar-nav>
-      Right aligned nav items
-      <b-navbar-nav class="ml-auto">
-        <b-nav-form>
-          <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
-          <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
-        </b-nav-form>
-        <b-nav-item-dropdown text="Lang" right>
-          <b-dropdown-item href="#">EN</b-dropdown-item>
-          <b-dropdown-item href="#">ES</b-dropdown-item>
-          <b-dropdown-item href="#">RU</b-dropdown-item>
-          <b-dropdown-item href="#">FA</b-dropdown-item>
-        </b-nav-item-dropdown>
-        <b-nav-item-dropdown right>
-          Using 'button-content' slot
-          <template #button-content>
-            <em>User</em>
-          </template>
-          <b-dropdown-item href="#">Profile</b-dropdown-item>
-          <b-dropdown-item href="#">Sign Out</b-dropdown-item>
-        </b-nav-item-dropdown>
-      </b-navbar-nav>
-    </b-collapse> -->
-<!-- ################## Commenting out as this section might be used in the future ################## --> 
-  </b-navbar>
+      <b-form inline @submit.prevent="changeIssueRepo">
+        <label class="sr-only" for="inline-form-input-name">Repo Owner</label>
+        <b-form-input
+          id="inline-form-input-repo-owner"
+          class="mb-2 mr-sm-2 mb-sm-0"
+          placeholder="Repo Owner"
+          v-model="repoOwner">
+        </b-form-input>
+        <label class="sr-only" for="inline-form-input-username">Repo Name</label>
+        <b-form-input 
+          id="inline-form-input-repo-name"
+          class="mb-2 mr-sm-2 mb-sm-0"
+          placeholder="Repo Name"
+          v-model="repoName">
+        </b-form-input>
+        <b-button variant="primary" type="submit" >Submit</b-button>
+      </b-form>
+      
+    </b-navbar>
   </div>
 </template>
 
 <script>
+import { router } from '../router';
+import { mapActions, mapGetters} from 'vuex';
+
 export default {
   name: 'Navbar',
 
-  props: ['owner', 'repo']
+  props: ['owner', 'repo'],
+
+  data() {
+    return {
+      repoOwner: '',
+      repoName: ''
+    }
+  },
+
+  methods: {
+    ...mapActions(['changeIssueRepo']),
+    onSubmit() {
+      this.$emit('issuesChange', [this.repoOwner, this.repoName]);
+      router.push({path: '', query: Object.assign({}, this.$route.query, { owner: this.repoOwner, repo: this.repoName }) });
+    }
+  },
+
+
 }
 </script>
 

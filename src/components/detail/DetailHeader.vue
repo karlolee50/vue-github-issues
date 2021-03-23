@@ -49,6 +49,6 @@ export default {
     formatDate(date) {
       return formatDateHelper(date);
     }
-  }
+  },
 }
 </script>
