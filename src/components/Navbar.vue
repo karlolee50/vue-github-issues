@@ -4,7 +4,7 @@
     <b-navbar-brand href="/">
       {{ owner }}/{{ repo }}
     </b-navbar-brand>
-      <b-form inline @submit.prevent="onSubmit">
+      <b-form inline @submit.prevent="changeIssueRepo">
         <label class="sr-only" for="inline-form-input-name">Repo Owner</label>
         <b-form-input
           id="inline-form-input-repo-owner"
@@ -27,7 +27,8 @@
 </template>
 
 <script>
-import { router } from '../main';
+import { router } from '../router';
+import { mapActions, mapGetters} from 'vuex';
 
 export default {
   name: 'Navbar',
@@ -42,6 +43,7 @@ export default {
   },
 
   methods: {
+    ...mapActions(['changeIssueRepo']),
     onSubmit() {
       this.$emit('issuesChange', [this.repoOwner, this.repoName]);
       router.push({path: '', query: Object.assign({}, this.$route.query, { owner: this.repoOwner, repo: this.repoName }) });

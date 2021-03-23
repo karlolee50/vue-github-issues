@@ -4,8 +4,25 @@ const OWNER = 'vuejs';
 const REPO = 'vue';
 
 export default {
+  // fetchAll(pageNumber, owner, repo, status) {
+  //   const promise = axios.get(`https://api.github.com/repos/${owner}/${repo}/issues`, {
+  //     headers: {
+  //       accept: 'application/vnd.github.v3+json'
+  //     },
+  //     params: {
+  //       per_page: 40,
+  //       page: pageNumber,
+  //       state: status
+  //     }
+  //   });
+
+  //   const issuesData = promise.then(response => response.data);
+
+  //   return issuesData;
+  // },
+
   fetchAll(pageNumber, owner, repo, status) {
-    const promise = axios.get(`https://api.github.com/repos/${owner}/${repo}/issues`, {
+    return axios.get(`https://api.github.com/repos/${owner}/${repo}/issues`, {
       headers: {
         accept: 'application/vnd.github.v3+json'
       },
@@ -16,33 +33,50 @@ export default {
       }
     });
 
-    const issuesData = promise.then(response => response.data);
+    // const issuesData = promise.then(response => response.data);
 
-    return issuesData;
+    // return issuesData;
   },
 
+  // fetchIssue(issueId, owner, repo){
+  //   const promise = axios.get(`https://api.github.com/repos/${owner}/${repo}/issues/${issueId}`, {
+  //     headers: {
+  //       accept: 'application/vnd.github.v3+json'
+  //     }
+  //   });
+
+  //   const issueData = promise.then(response => response.data);
+
+  //   return issueData;
+  // },
+
   fetchIssue(issueId, owner, repo){
-    const promise = axios.get(`https://api.github.com/repos/${owner}/${repo}/issues/${issueId}`, {
+    return axios.get(`https://api.github.com/repos/${owner}/${repo}/issues/${issueId}`, {
       headers: {
         accept: 'application/vnd.github.v3+json'
       }
     });
-
-    const issueData = promise.then(response => response.data);
-
-    return issueData;
   },
 
   markdownText(text) {
-    const promise = axios.post(`https://api.github.com/markdown`, {
+    return axios.post(`https://api.github.com/markdown`, {
       headers: {
         accept: 'application/vnd.github.v3+json'
       },
       text: text
     });
-
-    const body = promise.then(response => response.data);
-
-    return body;
   }
+
+  // markdownText(text) {
+  //   const promise = axios.post(`https://api.github.com/markdown`, {
+  //     headers: {
+  //       accept: 'application/vnd.github.v3+json'
+  //     },
+  //     text: text
+  //   });
+
+  //   const body = promise.then(response => response.data);
+
+  //   return body;
+  // }
 }

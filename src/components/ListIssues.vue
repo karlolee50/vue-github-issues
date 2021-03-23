@@ -3,33 +3,34 @@
     <div style="text-align: right">
       <b-button-group>
         <b-button
-          @click="onChangeStatus(STATUS.ALL)"
-          :variant="status ===STATUS.ALL ? isActive : ''" >
+          @click="onChangeFilter(STATUS.ALL)"
+          :variant="currentState ===STATUS.ALL ? isActive : ''" >
           All
         </b-button>
         <b-button
-          @click="onChangeStatus(STATUS.OPEN)"
-          :variant="status ===STATUS.OPEN ? isActive : ''" >
+          @click="onChangeFilter(STATUS.OPEN)"
+          :variant="currentState ===STATUS.OPEN ? isActive : ''" >
           Open
         </b-button>
         <b-button
-          @click="onChangeStatus(STATUS.CLOSED)"
-          :variant="status ===STATUS.CLOSED ? isActive : ''" >
+          @click="onChangeFilter(STATUS.CLOSED)"
+          :variant="currentState ===STATUS.CLOSED ? isActive : ''" >
           Closed
         </b-button>
       </b-button-group>
     </div>
-    <ListItem :issues="issues" />
-    <ListItem :issues="issues" :ROOT_URL="ROOT_URL"></ListItem>
+    <!-- <ListItem :issues="issues" /> -->
+    <ListItem :issues="allIssues" :ROOT_URL="ROOT_URL"></ListItem>
     <b-pagination
       v-model="currentPage"
       :total-rows="rows"
       :per-page="perPage"
-      @change="goToPage"
+      @change="goToAnotherPage"
       align="center"
       style="padding-top: 10px"
       aria-controls="my-table"
     />
+    
   </div>
 </template>
 
@@ -37,7 +38,8 @@
 import api from '../helpers/github';
 import ListItem from './ListItem';
 
-import { router } from '../main';
+import { router } from '../router';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'ListIssues',
@@ -61,37 +63,42 @@ export default {
   },
   
   methods: {
-    fetch(pageNumber) {
-      this.currentStatusQuery = this.$route.query.status;
-      this.status = !this.currentStatusQuery ? this.STATUS.ALL : this.currentStatusQuery;
-      this.newOwner = this.$route.query.owner;
-      this.newRepo = this.$route.query.repo;
-      this.owner = !this.newOwner ? 'vuejs' : this.newOwner;
-      this.repo = !this.newRepo ? 'vue' : this.newRepo;
-      api.fetchAll(pageNumber, this.owner, this.repo, this.status).then((response) => {
-        this.issues = response;
-      });
-    },
+    ...mapActions (['fetchAllIssues', 'goToAnotherPage', 'onChangeFilter']),
 
-    goToPage(value) {
-      this.currentPage = value;
-      this.fetch(this.currentPage, this.owner, this.repo, this.status);
-      setTimeout(() => {
-        window.scrollTo(0,0);
-      }, 300);
-    },
+    // fetch(pageNumber) {
+    //   this.currentStatusQuery = this.$route.query.status;
+    //   this.status = !this.currentStatusQuery ? this.STATUS.ALL : this.currentStatusQuery;
+    //   this.newOwner = this.$route.query.owner;
+    //   this.newRepo = this.$route.query.repo;
+    //   this.owner = !this.newOwner ? 'vuejs' : this.newOwner;
+    //   this.repo = !this.newRepo ? 'vue' : this.newRepo;
+    //   api.fetchAll(pageNumber, this.owner, this.repo, this.status).then((response) => {
+    //     this.issues = response.data;
+    //   });
+    // },
 
-    onChangeStatus(value) {
-      this.status = value;
-      router.push({ path: '', query: Object.assign({}, this.$route.query, { status: `${this.status}` }) });
-      this.fetch(this.currentPage, this.owner, this.repo, this.status);
-    },
+    // goToPage(value) {
+    //   this.currentPage = value;
+    //   this.fetch(this.currentPage, this.owner, this.repo, this.status);
+    //   setTimeout(() => {
+    //     window.scrollTo(0,0);
+    //   }, 300);
+    // },
+
+    // onChangeStatus(value) {
+    //   this.status = value;
+    //   router.push({ path: '', query: Object.assign({}, this.$route.query, { status: `${this.status}` }) });
+    //   this.fetch(this.currentPage, this.owner, this.repo, this.status);
+    // },
   },
 
   computed: {
+    ...mapGetters(['allIssues', 'currentState']),
+
     rows() {
-      return this.issues.length;
+      return this.allIssues.length;
     },
+    
   },
 
   watch: {
@@ -109,7 +116,8 @@ export default {
       OPEN: "open",
       CLOSED: "closed"
     };
-    this.fetch(this.currentPage, this.owner, this.repo, this.status);
+    // this.fetch(this.currentPage, this.owner, this.repo, this.status);
+    this.fetchAllIssues();
   }
 
 }
