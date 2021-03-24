@@ -18,7 +18,7 @@ Vue.config.productionTip = false
 
 const routes = [
   { 
-    path: "/issue/:issueId", 
+    path: "/owner=:owner/repo=:repo/issue/:issueId", 
     name: 'issue', 
     component: IssueDetail,
     props: true
@@ -26,6 +26,9 @@ const routes = [
   {
     path: "/status=:status",
     name: 'status',
+  },
+  {
+    path: "/owner=:owner&repo=:repo",
     component: ListIssues
   }
 ];
